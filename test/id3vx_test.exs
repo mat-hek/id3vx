@@ -106,7 +106,12 @@ defmodule Id3vxTest do
                  label: "Comments"
                },
                %Frame{
-                 data: %Unknown{},
+                 data: %Frame.UnsynchronisedLyricsText{
+                   content_descriptor: "",
+                   encoding: :utf16,
+                   language: "eng",
+                   lyrics_text: "Why run copper wires through your walls when you can run fiber?"
+                 },
                  id: "USLT",
                  label: "Unsynchronised lyric/text transcription"
                },
