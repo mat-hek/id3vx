@@ -1,7 +1,7 @@
 defmodule Id3vx.Utils do
   @moduledoc false
 
-  use Bitwise
+  import Bitwise
   alias Id3vx.Error
 
   def pad_to_byte_size(not_binary, size) when not is_binary(not_binary) do

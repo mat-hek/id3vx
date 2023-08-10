@@ -865,4 +865,11 @@ defmodule Id3vxTest do
     {result, _} = System.shell("ffmpeg -i #{outpath} 2>&1")
     refute String.contains?(result, "Incorrect BOM")
   end
+
+  test "try_skip_tag_binary" do
+    sample = File.read!(Path.join(@samples_path, "atp483.mp3"))
+    assert {:ok, rest} = Id3vx.try_strip_tag_binary(sample)
+    tag = Id3vx.get_tag_binary(sample)
+    assert tag <> rest == sample
+  end
 end

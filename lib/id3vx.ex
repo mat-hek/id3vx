@@ -278,6 +278,26 @@ defmodule Id3vx do
   end
 
   @doc """
+  Tries to skip tag from an mp3 binary.
+
+  On success returns `{:ok, rest_of_mp3}`, when ID3 tag is
+  not found returns `{:error, :not_found}` and when binary
+  is incomplete, returns `{:error, :insufficient_data}`.
+  """
+  @spec try_strip_tag_binary(binary()) ::
+          {:ok, binary()} | {:error, :not_found | :insufficient_data}
+  def try_strip_tag_binary(<<binary::binary>>) do
+    with <<header::binary-size(10), rest::binary>> <- binary,
+         {_result, %{size: tag_size}} <- parse_tag(header),
+         <<_body::binary-size(tag_size), binary::binary>> <- rest do
+      {:ok, binary}
+    else
+      :not_found -> {:error, :not_found}
+      <<_not_matched::binary>> -> {:error, :insufficient_data}
+    end
+  end
+
+  @doc """
   Generate a tag binary from a provided `Id3vx.Tag` struct.
 
   Returns a binary.
